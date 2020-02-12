@@ -1,20 +1,8 @@
 import torch
 from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForMaskedLM
-from sklearn.metrics.pairwise import cosine_similarity
 from nltk.stem.wordnet import WordNetLemmatizer
-from nltk import sent_tokenize
-from sklearn.cluster import AffinityPropagation
-from sklearn.cluster import KMeans
-from sklearn.cluster import DBSCAN
-from collections import Counter
-from scipy.stats import entropy
-from scipy.stats import spearmanr
-import numpy as np
-import os
 import csv
-import re
 import pickle
-import pandas as pd
 
 from src.extraction_for_BERT import *
 
@@ -31,8 +19,6 @@ state_dict = torch.load("COHA_BERT/model_coha_epoch_3/pytorch_model.bin", map_lo
 model = BertModel.from_pretrained('bert-base-uncased', state_dict=state_dict)
 # Put the model in "evaluation" mode, meaning feed-forward operation.
 model.eval()
-
-
 
 gold_standard_file = "Gulordava_word_meaning_change_evaluation_dataset.csv"
 f = open(gold_standard_file, 'r')
@@ -79,13 +65,7 @@ for i, word_tuple in enumerate(word_tuples):
             embeddings_dict[word] = {"1960": embeddings1, "1990": embeddings2}
             sentences_dict[word] = {"1960": valid_sentences1, "1990": valid_sentences2}
 
-# outfile = "coha_sentences_gulordava.pkl"
-# f = open(outfile, 'wb')
-# pickle.dump(sentences_dict, f)
-# f.close()
-# print("***** Done saving sentences! *****")
-
-outfile = "bert_embeddings_gulordava.pkl"
+outfile = "bert_embeddings.pkl"
 f = open(outfile, 'wb')
 pickle.dump(embeddings_dict, f)
 f.close()

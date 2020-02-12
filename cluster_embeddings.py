@@ -1,17 +1,11 @@
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.cluster import AffinityPropagation
-from sklearn.cluster import KMeans
-from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score
-from collections import Counter
-from scipy.stats import entropy
 from scipy.stats import spearmanr
 from scipy.stats import pearsonr
 import numpy as np
 import csv
 import re
 import pickle
-import json
 import pandas as pd
 from src.clustering_BERTemb import *
 
@@ -33,7 +27,7 @@ results_dict = {"word": [], "cosine_dist": [], "jsd": [], "gold_standard": [], "
 cluster_labels_dict = {}
 cluster_centroids_dict = {}
 n_clusters = [3]
-#for k in n_clusters:
+
 print("Clustering BERT embeddings")
 for i, word in enumerate(target_words):
     print("\n=======", i+1, "word:", word, "=======")
@@ -70,13 +64,6 @@ for i, word in enumerate(target_words):
     cosine_dist_vec.append(cosine_dist)
     gold_standard_vec.append(gold_standard_dict[word])
 
-    #print("counts t1:", t1)
-    #print("counts t2:", t2)
-    #print("Cosine distance:", cosine_dist)
-    #print("Silhouette score:", sil_score)
-    #print("JS divergence:", jsd)
-    #print("Gold standard:", gold_standard_dict[word])
-
     # add results to dataframe for saving
     cluster_labels_dict[word] = {"1960": clusters1, "1990": clusters2}
     cluster_centroids_dict[word] = centroids
@@ -91,8 +78,6 @@ for i, word in enumerate(target_words):
         results_dict["silhouette"].append(0)
 
 # compute Spearman correlation between cosine distances obtained by our method and the human-annotated ground truth
-#print("\nclusters =", k)
-
 mean_silhouette = np.mean(results_dict["silhouette"])
 print("Mean silhouette score:", mean_silhouette)
 

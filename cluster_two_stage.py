@@ -1,18 +1,10 @@
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.cluster import AffinityPropagation
-from sklearn.cluster import KMeans
-from sklearn.cluster import DBSCAN
-from sklearn.metrics import silhouette_score
-from collections import Counter
-from scipy.stats import entropy
 from scipy.stats import spearmanr
 from scipy.stats import pearsonr
 import numpy as np
 import csv
 import re
 import pickle
-import json
-import pandas as pd
 from src.clustering_BERTemb import *
 
 # perform clustering and other methods on saved BERT embeddings
