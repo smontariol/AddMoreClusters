@@ -10,21 +10,16 @@ from collections import Counter
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-def visualize_word_clusters():
+def visualize_word_clusters(word):
     embedding_file = "bert_embeddings_gulordava_finetuned_epoch_5.pkl"
     clustering_file = "labels_aff_prop_finetuned_epoch_5.pkl"
     sentences_file = "coha_sentences_gulordava.pkl"
     centroids_file = "centroids_aff_prop_finetuned_epoch_5.pkl"
-    results_file = "results_aff_prop_finetuned_epoch_5.csv"
     cluster_data = pickle.load(open(clustering_file, 'rb'))
-    #results_data = pickle.load(open(results_file, 'r'))
     centroids = pickle.load(open(centroids_file, 'rb'))
     embeddings = pickle.load(open(embedding_file, 'rb'))
     sentences = pickle.load(open(sentences_file, 'rb'))
 
-    #target_words = ['vector']
-    #for word in target_words:
-    word = 'neutron'
     embeddings_t0 = embeddings[word]['1960']
     embeddings_t1 = embeddings[word]['1990']
     labels_t0 = cluster_data[word]['1960']
@@ -56,7 +51,6 @@ def visualize_word_clusters():
                 smallest_dist = dist
         print("Cluster:", cluster_index)
         print("Instances:", len(instance_indexes))
-        #print("Nearest centroid instance:", nearest_instance)
         print("Nearest centroid sentence:", df['sentences'][nearest_instance])
 
         pca = PCA(n_components=2)
@@ -64,14 +58,10 @@ def visualize_word_clusters():
         pca_result = pca.fit_transform(arr)
         df['PCA1'] = pca_result[:,0]
         df['PCA2'] = pca_result[:,1]
-        #df2 = df[(df['clusters'] !=4) & (df['clusters'] != 5) & (df['clusters'] != 6) & (df['clusters'] != 9)]
         df2 = df[df.cluster.isin(valid_clusters)]
         plt.clf()
         plt.figure(figsize=(10,10))
-        # scatterplot the two principal components
         n_colors = len(set(df2['cluster']))
-        #print("colors: ", n_colors)
-        #print(df)
         ax = sns.scatterplot(
             x='PCA1',
             y='PCA2',
@@ -84,9 +74,8 @@ def visualize_word_clusters():
             alpha=1.0
         )
         fig = ax.get_figure()
-        fig.savefig('figures/word_clusters/' + word + '.png')
+        fig.savefig(word + '.png')
         plt.close()
-
 
 
 def visualize_frequencies():
@@ -127,15 +116,3 @@ def visualize_frequencies():
     label_point(sorted_df['freq'], sorted_df['senses'], sorted_df['word'], plt.gca())
 
     plt.show()
-    #scatter_ax.set(xlabel='clusters', ylabel='frequency')
-
-
-    # ax = sns.distplot(a=res_df["senses"], hist=True, kde=False, rug=False)
-    # ax.set(xlabel='clusters', ylabel='words')
-    # plt.show()
-    #
-    # freq_ax = sns.distplot(a=(freq_df['1960'] + freq_df['1990']), hist=True, kde=False, rug=False)
-    # freq_ax.set(xlabel='frequency', ylabel='words')
-    # plt.show()
-
-visualize_word_clusters()
