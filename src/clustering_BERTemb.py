@@ -11,8 +11,6 @@ from utils.extraction_for_BERT import *
 def compute_jsd(p, q):
     p = np.asarray(p)
     q = np.asarray(q)
-    p /= p.sum()
-    q /= q.sum()
     m = (p + q) / 2
     return (entropy(p, m) + entropy(q, m)) / 2
 
