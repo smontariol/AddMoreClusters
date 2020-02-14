@@ -1,27 +1,26 @@
 import re
 import string
-from collections import Counter
 import numpy as np
 import torch
-from nltk.corpus import stopwords
-from pytorch_pretrained_bert import BertTokenizer, BertModel
 import random
+import os
+from nltk.corpus import stopwords
+from nltk import sent_tokenize
+from collections import Counter
+from pytorch_pretrained_bert import BertTokenizer, BertModel
 
-#bert_model = 'bert-base-uncased'
-# bert_path = "pretrained_models/bert-base-uncased.tar.gz"
-#tokenizer = BertTokenizer.from_pretrained(bert_model)
-# Load pre-trained model (weights)
-#model = BertModel.from_pretrained(bert_model)
-# Put the model in "evaluation" mode, meaning feed-forward operation.
-#model.eval()
+bert_model = 'bert-base-uncased'
+bert_path = "pretrained_models/bert-base-uncased.tar.gz"
+tokenizer = BertTokenizer.from_pretrained(bert_model)
+model = BertModel.from_pretrained(bert_model)
+model.eval()
 
-def load_coha_sentences(decade=1820):
-    coha_path = "corpora/COHA/text/" + str(decade)
+
+def load_coha_sentences(decade=1820, coha_path):
+    coha_path = coha_path + str(decade)
     print("Loading COHA sentences from", coha_path)
     coha_files = os.listdir(coha_path)
-    #print("Files for decade:", coha_files)
     sentences = []
-    # sample_path = "corpora/COHA/text/1810/coha_text_fic_1810_8641.txt"
     for coha_file in coha_files:
         if ".txt" in coha_file:
             coha_filepath = coha_path + '/' + coha_file
@@ -41,12 +40,7 @@ def get_embedding_for_sentence(tokenized_sent):
     segments_tensors = torch.tensor([segments_ids])
     with torch.no_grad():
         encoded_layers, _ = model(tokens_tensor, segments_tensors)
-        #print("Number of layers:", len(encoded_layers))
-        layer_i = 0
-        #print("Number of batches:", len(encoded_layers[layer_i]))
         batch_i = 0
-        #print("Number of tokens:", len(encoded_layers[layer_i][batch_i]))
-        token_i = 0
         token_embeddings = []
         # For each token in the sentence...
         for token_i in range(len(tokenized_sent)):
@@ -57,27 +51,20 @@ def get_embedding_for_sentence(tokenized_sent):
                 vec = encoded_layers[layer_i][batch_i][token_i]
                 hidden_layers.append(vec)
             token_embeddings.append(hidden_layers)
-        concatenated_last_4_layers = [torch.cat((layer[-1], layer[-2], layer[-3], layer[-4]), 0) for layer in token_embeddings]  # [number_of_tokens, 3072]
-        summed_last_4_layers = [torch.sum(torch.stack(layer)[-4:], 0) for layer in token_embeddings]  # [number_of_tokens, 768]
+        concatenated_last_4_layers = [torch.cat((layer[-1], layer[-2], layer[-3], layer[-4]), 0) for layer in token_embeddings]
+        summed_last_4_layers = [torch.sum(torch.stack(layer)[-4:], 0) for layer in token_embeddings]
         last_layer = [layer[-1] for layer in token_embeddings]
         return summed_last_4_layers
 
 
 def get_embeddings_for_word(word, sentences):
     print("Getting BERT embeddings for word:", word)
-    #print("Sentences:", len(sentences))
-    #word = word.lower()
     word_embeddings = []
     valid_sentences = []
     for i, sentence in enumerate(sentences):
             marked_sent = "[CLS] " + sentence + " [SEP]"
             tokenized_sent = tokenizer.tokenize(marked_sent)
-            #tokenized_sent = [lemma.lemmatize(tok) for tok in tokenized_sent]
-            #print("Sentence:", sentence)
             if word in tokenized_sent and len(tokenized_sent) < 512 and len(tokenized_sent) > 3:
-                #print("Sentence", i, "of", len(sentences))
-                #print("Len:", len(tokenized_sent))
-                #print("Getting embedding for sentence", i, "of", len(sentences))
                 sent_embedding = get_embedding_for_sentence(tokenized_sent)
                 word_indexes = list(np.where(np.array(tokenized_sent) == word)[0])
                 for index in word_indexes:
