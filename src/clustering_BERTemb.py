@@ -76,3 +76,20 @@ def merge_clusters(cluster_counts, cluster_neighbors, weak_cluster_thresh):
     return merged_cluster
 
 
+def compute_divergence_from_cluster_labels(labels1, labels2):
+    labels_all = list(np.concatenate((labels1, labels2)))
+    counts1 = Counter(labels1)
+    counts2 = Counter(labels2)
+    n_senses = list(set(labels_all))
+    #print("Clusters:", len(n_senses))
+
+    t1 = np.array([counts1[i] for i in n_senses])
+    t2 = np.array([counts2[i] for i in n_senses])
+
+    # compute JS divergence between count vectors by turning them into distributions
+    t1_dist = t1/t1.sum()
+    t2_dist = t2/t2.sum()
+
+    jsd = compute_jsd(t1_dist, t2_dist)
+    print("clustering JSD:", jsd)
+    return jsd
