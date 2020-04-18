@@ -1,0 +1,14 @@
+pytorch_transformers
+torch
+tensorboardX
+tensorboard
+glob2
+tqdm
+pandas
+sklearn
+scipy
+numpy
+seaborn
+matplotlib
+nltk
+
