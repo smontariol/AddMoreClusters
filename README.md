@@ -7,7 +7,7 @@ Published results were produced in Python 3 programming environment. Instruction
 To get the source code, clone the project from the repository with 'git clone https://github.com/smontariol/AddMoreClusters/'<br/>
 Install dependencies if needed: pip install -r requirements.txt
 
-### To reproduce the results on the LiverpoolFC corpus published in the paper run the code in the command line using following commands: ###
+### To reproduce the results on the COHA corpus published in the paper run the code in the command line using following commands: ###
 
 To fine-tune custom BERT model on the COHA corpus<br/>
 ```bash
