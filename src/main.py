@@ -29,6 +29,7 @@ def load_coha_sentences(decade=1820, coha_path):
     return sentences
 
 
+# Extract BERT embeddings for target words
 gold_standard_file = "Gulordava_word_meaning_change_evaluation_dataset.csv"
 f = open(gold_standard_file, 'r')
 reader = csv.reader(f)
@@ -74,7 +75,6 @@ outfile = "bert_embeddings_gulordava_finetuned_epoch_5.pkl"
 f = open(outfile, 'wb')
 pickle.dump(embeddings_dict, f)
 f.close()
-print("***** Done saving embeddings to", outfile, "! *****")
 
 # Evaluate against gold standard words
 gold_standard_dict = {w[0]: float(re.sub(",", ".", w[-1])) for w in target_words[1:]}
