@@ -22,6 +22,11 @@ TODO
 To detect semantic drift for each target word:<br/>
 TODO
 
+Script src/main.py does all three operations given that data are available:
+ - COHA corpus is in src/corpora/COHA/text
+ - Gulordava and Baroni dataset is in src/Gulordava_word_meaning_change_evaluation_dataset.csv
+ - BERT model is in pretrained_models/bert-base-uncased.tar.gz
+
 ## Acknowledgements
 This work has been partly supported by the European Union’s Horizon 2020 research and innovation programme under grant 770299 (NewsEye) and 825153 (EMBEDDIA).
 
