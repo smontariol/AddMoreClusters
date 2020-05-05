@@ -13,19 +13,12 @@ To fine-tune custom BERT model on the COHA corpus:<br/>
 ```bash
 python3 BERT_finetuning.py --train_data_file PATH_TO_COHA_CORPUS --output_dir PATH_TO_SAVED_MODEL --model_type bert --mlm --do_train --num_train_epochs 5 --per_gpu_train_batch_size 8 --model_name_or_path bert-base-uncased
 ```
-To generate BERT contextual embeddings:<br/>
-TODO
 
-To cluster contextual embeddings:<br/>
-TODO
 
-To detect semantic drift for each target word:<br/>
-TODO
-
-Script src/main.py does all three operations given that data are available:
+Script src/main.py generates BERT contextual embeddings, clusters them and detect semantic drift for each target word given the following conditions:
  - COHA corpus is in src/corpora/COHA/text
  - Gulordava and Baroni dataset is in src/Gulordava_word_meaning_change_evaluation_dataset.csv
- - BERT model is in pretrained_models/bert-base-uncased.tar.gz
+ - The path to BERT model is pretrained_models/bert-base-uncased.tar.gz
 
 ## Acknowledgements
 This work has been partly supported by the European Union’s Horizon 2020 research and innovation programme under grant 770299 (NewsEye) and 825153 (EMBEDDIA).
