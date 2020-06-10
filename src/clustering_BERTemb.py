@@ -5,7 +5,7 @@ from sklearn.cluster import DBSCAN
 from collections import Counter
 from scipy.stats import entropy
 import numpy as np
-from utils.extraction_for_BERT import *
+from extraction_for_BERT import *
 
 
 def compute_jsd(p, q):

@@ -13,8 +13,8 @@ from sklearn.metrics import silhouette_score
 from extraction_for_BERT import get_embeddings_for_word
 from clustering_BERTemb import cluster_word_embeddings_aff_prop, compute_jsd
 
-def load_coha_sentences(decade=1820, coha_path):
-    coha_path += + str(decade)
+def load_coha_sentences(decade, coha_path):
+    coha_path += str(decade)
     print("Loading COHA sentences from", coha_path)
     coha_files = os.listdir(coha_path)
     sentences = []

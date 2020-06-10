@@ -16,22 +16,6 @@ model = BertModel.from_pretrained(bert_model)
 model.eval()
 
 
-def load_coha_sentences(decade=1820, coha_path):
-    coha_path = coha_path + str(decade)
-    print("Loading COHA sentences from", coha_path)
-    coha_files = os.listdir(coha_path)
-    sentences = []
-    for coha_file in coha_files:
-        if ".txt" in coha_file:
-            coha_filepath = coha_path + '/' + coha_file
-            try:
-                text = open(coha_filepath, 'r').read().lower()
-            except:
-                text = open(coha_filepath, 'rb').read().decode('utf-8').lower()
-            sentences.extend(sent_tokenize(text))
-    return sentences
-
-
 def get_embedding_for_sentence(tokenized_sent):
     #print("Getting embedding for sentence")
     indexed_tokens = tokenizer.convert_tokens_to_ids(tokenized_sent)
