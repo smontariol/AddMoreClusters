@@ -19,6 +19,10 @@ Script src/main.py generates BERT contextual embeddings, clusters them and detec
  - COHA corpus is in src/corpora/COHA/text
  - Gulordava and Baroni dataset is in src/Gulordava_word_meaning_change_evaluation_dataset.csv
  - The path to BERT model is pretrained_models/bert-base-uncased.tar.gz
+ 
+### Note!
+
+The results reported in the paper for the Affinity Propagation are reproducible with Scikit version 0.21. The Scikit-learn implementation of Affinity Propagation behaves different from the version we used (ver 0.21) to subsequent versions (ver 0.22 and higher): some bigger datasets cannot be clustered. To replicate the Affinity Propagation results, we recommend downgrading to Scikit to 0.21, as it is specified in requirements.txt
 
 ## Acknowledgements
 This work has been partly supported by the European Union’s Horizon 2020 research and innovation programme under grant 770299 (NewsEye) and 825153 (EMBEDDIA).
