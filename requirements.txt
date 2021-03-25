@@ -51,7 +51,7 @@ pytorch-pretrained-bert==0.6.2
 pytorch-transformers==1.2.0
 pytz==2019.3
 pyuca==1.2
-PyYAML==5.3
+PyYAML==5.4
 regex==2020.2.20
 requests==2.23.0
 requests-oauthlib==1.3.0
